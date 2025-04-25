@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
+import { useUser } from './UserContext'
 
 const Ul = styled.ul`
     border :1px solid black;
@@ -33,33 +34,56 @@ const Button = styled.button`
 
 const UserRegistration = () => {
     const navigater = useNavigate();
-    const [imgURL, setImgURL] = useState('');
-    const [ID, setID] = useState('');
-    const [name, setName] = useState('');
-    const [age, setAge] = useState('');
-    const [phone, setPhone] = useState('');
-    const [email, setEmail] = useState('');
-    const [state, setState] = useState('');
+    const { addUser } = useUser();
+    const [formData, setFormData] = useState({
+        img : '',
+        name : '',
+        age : '',
+        phone : '',
+        email : '',
+        state : false,
+    });
+    
+    const handleSubmit = (e) =>{
+        e.preventDefault();
+        addUser({
+            img : formData.img,
+            name : formData.name.trim(),
+            age : parseInt(formData.age),
+            phone : formData.phone,
+            email : formData.email,
+            state : formData.state
+        })
+        navigater("/");
+    }
+
+    const handleChange = (ev) =>{
+        const { name, value ,type, checked} = ev.target;
+        setFormData(prev => ({
+            ...prev,
+                [name] :type ==="checkbox" ? checked : value
+        }))
+    }
+
 
   return (
     <>
         <h2>유저 등록</h2>
-        <Ul>
-            <Li><Span>이미지 URL</Span> <Input type='text'/></Li>
-            <Li><Span>ID</Span> <Input type='text'/></Li>
-            <Li><Span>name</Span> <Input type='text'/></Li>
-            <Li><Span>age</Span> <Input type='text'/></Li>
-            <Li><Span>phone</Span> <Input type='text'/></Li>
-            <Li><Span>email</Span> <Input type='text'/></Li>
-            <Li><Span>state</Span> <Input type='text'/></Li>
-        </Ul>
+        <form onSubmit={handleSubmit}>
+            <Ul>
+                <Li><Span>이미지 URL</Span> <Input type='text' name='img' value={formData.img} onChange={handleChange} placeholder='이미지 주소를 입력해주세요.'/></Li>
+                <Li><Span>name</Span> <Input type='text' name='name' value={formData.name} onChange={handleChange} placeholder='이름을 입력해주세요.'/></Li>
+                <Li><Span>age</Span> <Input type='text' name='age' value={formData.age} onChange={handleChange} placeholder='나이를 입력해주세요.'/></Li>
+                <Li><Span>phone</Span> <Input type='text' name='phone' value={formData.phone} onChange={handleChange} placeholder='전화번호를 입력해주세요.'/></Li>
+                <Li><Span>email</Span> <Input type='text' name='email' value={formData.email} onChange={handleChange} placeholder='이메일을 입력해주세요.'/></Li>
+                <Li><Span>state</Span> <label htmlFor='state'><Input type='checkbox' name='state' checked={formData.state} onChange={handleChange}/>상태를 선택해주세요.</label></Li>
+            </Ul>
 
-        <Button onClick={() => navigater('/',{
-            state : {
-                
-            }
-        })}>저장하기</Button>
-        <Button onClick={() => navigater('/')}>목록으로가기</Button>
+            <Button type='submit'>저장하기</Button>
+            <Button type='button' onClick={() => navigater('/')}>목록으로가기</Button>
+        </form>
+           
+        
     </>
     
   )

@@ -24,7 +24,7 @@ const Img = styled.img`
 
 const P = styled.p`
     font-weight: 700;
-    text-align: left;
+    text-align: center;
 `
 
 const state = (s) =>{
