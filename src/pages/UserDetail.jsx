@@ -2,7 +2,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from './UserContext';
+import { useUser } from '../context/UserContext';
 
 const Wrap = styled.div`
   border: 1px solid black;

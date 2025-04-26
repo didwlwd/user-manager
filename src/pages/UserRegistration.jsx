@@ -1,7 +1,7 @@
 import React, { use, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-import { useUser } from './UserContext'
+import { useUser } from '../context/UserContext'
 
 const Ul = styled.ul`
     border :1px solid black;

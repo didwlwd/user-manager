@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -7,8 +7,10 @@ import UserList from './pages/UserList'
 import UserDetail from './pages/UserDetail'
 import UserRegistration from './pages/UserRegistration'
 import ErrorPage from './pages/ErrorPage'
-import { UserProvider } from './pages/UserContext'
+import { UserProvider } from './context/UserContext'
 import styled from 'styled-components'
+import {BlackOrWhite} from './context/BlackOrWhite'
+import { themeChange } from './context/BlackOrWhite'
 
 const Nav = styled.nav`
   background: #cef6fd;
@@ -34,14 +36,31 @@ const NavLink = styled(Link)`
   }
 `
 
-function App() {
+const Button = styled.button`
+  border-radius: 20px;
+  color: black;
+  padding: 20px;
+  background: white;
+  font-size: 16px;
+  font-weight: 700;
+  margin-right: 10px;
 
+  &:hover{
+    color: #000000;
+    background: #cffddb;
+  }
+`
+
+function App() {
+  const { toggleTheme } = themeChange;
   return (
     <UserProvider>
+      <BlackOrWhite>
         <BrowserRouter>
           <Nav>
             <NavLink to='/'>사용자 목록</NavLink>
             <NavLink to='/user'>사용자 등록</NavLink>
+            <Button onClick={toggleTheme}>테마 변경</Button>
           </Nav>
           <Routes>
             <Route path='/' element={<UserList />}/>
@@ -50,6 +69,7 @@ function App() {
             <Route path='*' element={<ErrorPage />}/>
           </Routes>
         </BrowserRouter>
+      </BlackOrWhite>
     </UserProvider>
     
   )
