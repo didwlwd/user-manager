@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import {themeChange} from '../context/BlackOrWhite'
 
 const Card = styled.div`
     border: 1px solid black;
@@ -10,6 +11,9 @@ const Card = styled.div`
     cursor: pointer;
     box-shadow: 1px 2px 2px ;
     display: inline-block;
+
+    color: #000000;
+    background-color: #ffffff;
 
     &:hover{
         scale: 1.01;
@@ -37,9 +41,10 @@ const state = (s) =>{
 
 const UserCard = ({user}) => {
     const navigater = useNavigate();
+    const { isDarkmode } = themeChange();
   return (
     <>
-        <Card onClick={() => navigater(`/user/${user.id}`)}>
+        <Card onClick={() => navigater(`/user/${user.id}`)} theme={isDarkmode ? 'dark' : 'white'}>
             <Img 
                 src={user.img} 
                 alt='사진'

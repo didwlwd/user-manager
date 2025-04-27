@@ -3,6 +3,12 @@ import { useParams } from 'react-router-dom'
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
+import {themeChange} from '../context/BlackOrWhite'
+
+const Header = styled.div`
+    color: ${props => props.theme === 'dark' ? '#ffffff' : '#000000'};
+    font-size: 24px;
+`
 
 const Wrap = styled.div`
   border: 1px solid black;
@@ -11,6 +17,7 @@ const Wrap = styled.div`
   width: 400px;
   margin: 0 auto;
   box-shadow: 1px 2px 1px;
+  background-color: white;
 `
 
 const Img = styled.img`
@@ -36,6 +43,8 @@ const UserDetail = () => {
   const navigater = useNavigate();
   const user = users.find(use => use.id === parseInt(id));
 
+  const { isDarkmode } = themeChange();
+
   const handleDelete = () =>{
       if(confirm("정말 삭제하시겠습니까?")){
         deleteUser(parseInt(id));
@@ -49,7 +58,9 @@ const UserDetail = () => {
 
   return (
     <>
-       <h2>{user.name} 님의 상세 정보 페이지</h2>
+      <Header theme={isDarkmode ? 'dark' : 'white'}>
+        <h2>{user.name} 님의 상세 정보 페이지</h2>
+      </Header>
       <Wrap>
         <Img src={user.img} alt='사진'/>
         <P>유저 ID : {user.id}</P>

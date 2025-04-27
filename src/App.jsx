@@ -9,11 +9,15 @@ import UserRegistration from './pages/UserRegistration'
 import ErrorPage from './pages/ErrorPage'
 import { UserProvider } from './context/UserContext'
 import styled from 'styled-components'
-import {BlackOrWhite} from './context/BlackOrWhite'
-import { themeChange } from './context/BlackOrWhite'
+import {BlackOrWhite, themeChange} from './context/BlackOrWhite'
+
+const Div = styled.div`
+  height: 100%;
+  background-color: ${props => props.theme === 'dark' ? '#1d1d1d' : '#ffffff'};
+`
 
 const Nav = styled.nav`
-  background: #cef6fd;
+  background: ${props => props.theme === 'dark' ? '#142252' : '#cef6fd'};
   height: 100px;
   display: flex;
   justify-content: right;
@@ -44,34 +48,46 @@ const Button = styled.button`
   font-size: 16px;
   font-weight: 700;
   margin-right: 10px;
+  outline: none;
 
   &:hover{
     color: #000000;
     background: #cffddb;
+    outline: none;
+    border-color: none;
   }
 `
+function Appcontent(){
+  const { isDarkmode, toggleTheme } = themeChange();
+
+  return(
+    <UserProvider>
+        <Div theme={isDarkmode ? 'dark' : 'white'}>
+          <BrowserRouter>
+            <Nav theme={isDarkmode ? 'dark' : 'white'}>
+              <NavLink to='/'>사용자 목록</NavLink>
+              <NavLink to='/user'>사용자 등록</NavLink>
+              <Button onClick={ toggleTheme }>테마 변경</Button>
+            </Nav>
+            <Routes>
+              <Route path='/' element={<UserList />}/>
+              <Route path='/user/:id' element={<UserDetail />}/>
+              <Route path='/user' element={<UserRegistration />}/>
+              <Route path='*' element={<ErrorPage />}/>
+            </Routes>
+          </BrowserRouter>
+        </Div>
+      </UserProvider>
+  )
+}
+
 
 function App() {
-  const { toggleTheme } = themeChange;
+  
   return (
-    <UserProvider>
-      <BlackOrWhite>
-        <BrowserRouter>
-          <Nav>
-            <NavLink to='/'>사용자 목록</NavLink>
-            <NavLink to='/user'>사용자 등록</NavLink>
-            <Button onClick={toggleTheme}>테마 변경</Button>
-          </Nav>
-          <Routes>
-            <Route path='/' element={<UserList />}/>
-            <Route path='/user/:id' element={<UserDetail />}/>
-            <Route path='/user' element={<UserRegistration />}/>
-            <Route path='*' element={<ErrorPage />}/>
-          </Routes>
-        </BrowserRouter>
-      </BlackOrWhite>
-    </UserProvider>
-    
+    <BlackOrWhite>
+      <Appcontent />
+    </BlackOrWhite>
   )
 }
 

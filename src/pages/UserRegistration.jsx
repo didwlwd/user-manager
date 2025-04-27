@@ -2,6 +2,12 @@ import React, { use, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { useUser } from '../context/UserContext'
+import {themeChange} from '../context/BlackOrWhite'
+
+const Header = styled.div`
+    color: ${props => props.theme === 'dark' ? '#ffffff' : '#000000'};
+    font-size: 24px;
+`
 
 const Ul = styled.ul`
     border :1px solid black;
@@ -10,6 +16,7 @@ const Ul = styled.ul`
     width: 300px;
     margin: 0 auto;
     box-shadow: 1px 2px 1px;
+    background-color: white;
 `
 const Li = styled.li`
     list-style-type: none;
@@ -43,6 +50,8 @@ const UserRegistration = () => {
         email : '',
         state : false,
     });
+
+    const { isDarkmode } = themeChange();
     
     const handleSubmit = (e) =>{
         e.preventDefault();
@@ -68,9 +77,13 @@ const UserRegistration = () => {
 
   return (
     <>
-        <h2>유저 등록</h2>
+        <Header theme={isDarkmode ? 'dark' : 'white'}>
+            <h2>사용자 등록</h2>
+        </Header>
+
+        
         <form onSubmit={handleSubmit}>
-            <Ul>
+            <Ul theme={isDarkmode ? 'dark' : 'white'}>
                 <Li><Span>이미지 URL</Span> <Input type='text' name='img' value={formData.img} onChange={handleChange} placeholder='이미지 주소를 입력해주세요.'/></Li>
                 <Li><Span>name</Span> <Input type='text' name='name' value={formData.name} onChange={handleChange} placeholder='이름을 입력해주세요.'/></Li>
                 <Li><Span>age</Span> <Input type='text' name='age' value={formData.age} onChange={handleChange} placeholder='나이를 입력해주세요.'/></Li>

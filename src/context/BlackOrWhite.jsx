@@ -3,14 +3,14 @@ import React, {createContext, useContext, useState } from 'react'
 const ThemeContext = createContext();
 
 export function BlackOrWhite({children}){
-    const [theme, setTheme] = useState("white");
+    const [isDarkmode, setTheme] = useState(false);
 
     const toggleTheme = () =>{
-        setTheme(theme === "white" ? "black" : "white")
+        setTheme(prev => !prev)
     }
 
   return (
-    <ThemeContext.Provider value={{theme,toggleTheme}}>
+    <ThemeContext.Provider value={{isDarkmode, toggleTheme}}>
       {children}
     </ThemeContext.Provider>
   )

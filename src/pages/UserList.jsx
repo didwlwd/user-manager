@@ -3,7 +3,12 @@ import UserCard from './UserCard'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom';
 import {useUser} from '../context/UserContext';
-import {themeChange} from '../context/BlackOrWhite';
+import {themeChange} from '../context/BlackOrWhite'
+
+const Header = styled.div`
+    color: ${props => props.theme === 'dark' ? '#ffffff' : '#000000'};
+    font-size: 24px;
+`
 
 const Wrap = styled.div`
     display: grid;
@@ -13,25 +18,18 @@ const Wrap = styled.div`
 
 const UserList = () => {
     const { users } = useUser(); 
-    const { theme, toggleTheme } = themeChange;
+    const { isDarkmode } = themeChange();
   return (
     <>
-        <div>
-            <h2>현재 유저</h2>
-        </div>
+        <Header theme={isDarkmode ? 'dark' : 'white'}>
+            <h2>사용자 목록</h2>
+        </Header>
         
-        <div
-            style={{
-                display : "grid",
-                gridTemplateColumns : "25% 25% 25% 25%",
-                margin: "0 250px",
-                background : theme,
-            }}
-        >
+        <Wrap>
             {users.map((u,index) => (
                 <UserCard user={u} key={index}/>
             ))}
-        </div>
+        </Wrap>
     </>
     
   )
